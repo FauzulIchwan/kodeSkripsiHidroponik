@@ -1,0 +1,1535 @@
+[
+    {
+        "id": "95838420939a3044",
+        "type": "tab",
+        "label": "Hidroponik",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "28c1651d2ac4b8e7",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "TDS Gauge",
+        "group": "591a80600ac0e839",
+        "order": 1,
+        "width": 6,
+        "height": 6,
+        "gtype": "gage",
+        "title": "TDS",
+        "label": "ppm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2500",
+        "colors": [
+            "#a80000",
+            "#00e626",
+            "#87b800"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 730,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "573c09446b542403",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "Temperature Gauge",
+        "group": "8f33856a0c23bd5d",
+        "order": 1,
+        "width": 6,
+        "height": 6,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "celcius",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 760,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "1022363e7db46856",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "Nutrisi A",
+        "group": "482abc419550ce90",
+        "order": 1,
+        "width": 6,
+        "height": "5",
+        "gtype": "wave",
+        "title": "Nutrisi A",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 720,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "5c749901610ae602",
+        "type": "ui_chart",
+        "z": "95838420939a3044",
+        "name": "TDS Chart",
+        "group": "591a80600ac0e839",
+        "order": 2,
+        "width": 6,
+        "height": 6,
+        "label": "PPM",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "2500",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 730,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f1260c7efced4612",
+        "type": "mqtt in",
+        "z": "95838420939a3044",
+        "name": "NodeMcu A",
+        "topic": "dataNodeMCUA",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "847872f3d2692d07",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 1760,
+        "wires": [
+            [
+                "b3b49d3bb80e408a",
+                "2b3eeca08e678941"
+            ]
+        ]
+    },
+    {
+        "id": "099daa302cbb77a2",
+        "type": "inject",
+        "z": "95838420939a3044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5a853ebb0fc1c893",
+        "type": "debug",
+        "z": "95838420939a3044",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 1940,
+        "wires": []
+    },
+    {
+        "id": "b3b49d3bb80e408a",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "setDataNodeMCUA",
+        "func": "let data, arrData, dataSplit;\n\nif (msg.topic == \"dataNodeMCUA\") {\n    data = msg.payload\n}\n\nif(data != undefined)\n{\n    dataSplit = data.split(\"|\")\n    // Cek apakah data yang diterima lengkap\n    if (dataSplit.length == 6) {\n        // Menyimpan data dalam array\n        arrData = {\n            'tds': dataSplit[0],\n            'temperatur': dataSplit[1],\n            'waterLevelA':dataSplit[2],\n            'waterLevelB': dataSplit[3],\n            'pH': dataSplit[4],\n            'pompa': dataSplit[5]\n        }\n        flow.set('dataNodeMCUA', arrData);\n    }\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.set('dummyPPFD', 400);",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 1760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8eaa3c5b50ffa4f6",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "Hidroponik",
+        "func": "let\n    result,\n    data,\n    ppfd,\n    prediction,\n    dataGambar,\n    arrDataRaspi,\n    tableData,\n    arrDataNodeMCUA,\n    arrDataNodeMCUB,\n    maxConfidence,\n    dummyPH\n\narrDataNodeMCUA = flow.get('dataNodeMCUA');\narrDataNodeMCUB = flow.get('dataNodeMCUB');\narrDataRaspi = flow.get('dataRaspi');\ndataGambar = flow.get('dataGambar');\ntableData = flow.get('dataTable') || [];\nmaxConfidence = Math.max(...arrDataRaspi.confidence);\nppfd = getPPFD();\ndummyPH = getPH();\nprediction = getLabelPrediction();\ntableData = mappingData(tableData, arrDataNodeMCUA, arrDataNodeMCUB, prediction );\nresult = [\n    { payload: arrDataNodeMCUA.tds },\n    { payload: arrDataNodeMCUA.temperatur },\n    { \n        payload: arrDataNodeMCUA.waterLevelA,\n        status: arrDataNodeMCUA.waterLevelA == 1 ? \"Tersedia\" : \"Habis\",\n        color: arrDataNodeMCUA.waterLevelA == 1 ? \"#06912b\" : \"#910606\"\n    },\n    {\n        payload: arrDataNodeMCUA.waterLevelB,\n        status: arrDataNodeMCUA.waterLevelB == 1 ? \"Tersedia\" : \"Habis\",\n        color: arrDataNodeMCUA.waterLevelB == 1 ? \"#06912b\" : \"#910606\"\n    },\n    { payload: arrDataNodeMCUA.pH }, //arrDataNodeMCUA.pH\n    { payload: arrDataNodeMCUB.PAR },\n    { payload: prediction },\n    { payload: maxConfidence},\n    { payload: arrDataRaspi.waktu },\n    { payload: dataGambar },\n    { payload: arrDataNodeMCUB.kelembaban },\n    { payload : tableData},\n    { payload : saveToDb(arrDataNodeMCUA,arrDataNodeMCUB,prediction)}\n];\n\n// menyimpan isi dari tabel pada flow dengan key dataTable\nflow.set('dataTable', tableData);\n\n// reset tabel jika datanya lebih dari atau sama dengan 200\nif (tableData.length >= 100) {\n    flow.set('dataTable', null);\n}\n\nreturn result;\n\nfunction getPPFD() {\n    let dummyPPFD = flow.get('dummyPPFD')\n    let randomNumber = Math.floor(Math.random() * (3)) - 2;\n    return dummyPPFD + randomNumber\n}\n\nfunction getPH() {\n    let dummyPh = 7\n    let randomNumber = (Math.random() - 0.3);\n    let result = dummyPh + randomNumber;\n    return parseFloat(result.toFixed(2));\n}\n\nfunction getLabelPrediction() {\n    let prediction = arrDataRaspi.prediksi;\n    let label = \"\";\n    switch (prediction) {\n        case 0:\n            label = \"Tahap Vegetatif Awal\";\n            break;\n        case 1:\n            label = \"Tahap Vegetatif Akhir\";\n            break;\n        case 2:\n            label = \"Siap Panen\";\n            break;\n        default:\n            label = \"Tanaman Tidak Terdeteksi\";\n            break;\n    }\n    return label;\n}\n\n/**\n* @param {{nutrientTemperature: any;plantTemperature: any;tds: any;minTDS: any;maxTDS: any;ph: any;nutrient: string;fertilizer: string;pumpControl: string;fertilizerPump: string;nutrientPump: string;datetime: any;}[]} tableData\n* @param {any} arrDataNodeMCUA\n* @param {any} arrDataNodeMCUB\n* @param {any} prediction\n*/\nfunction mappingData(tableData, arrDataNodeMCUA, arrDataNodeMCUB,prediction) {\n    tableData.unshift({\n        \"prediksi\" : prediction,\n        \"par\" : arrDataNodeMCUB.PAR,\n        \"tds\": arrDataNodeMCUA.tds,\n        \"temperatur\": arrDataNodeMCUA.temperatur,\n        \"ph\": arrDataNodeMCUA.pH, //arrDataNodeMCUA.pH\n        \"pupukA\": arrDataNodeMCUA.waterLevelA == \"1\" ? \"Tersedia\" : \"Habis\",\n        \"pupukB\": arrDataNodeMCUA.waterLevelB == \"1\" ? \"Tersedia\" : \"Habis\",\n        \"pompa\": arrDataNodeMCUA.pompa == \"1\"? \"Tidak Aktif\" : \"Tidak Aktif\",\n        \"kelembapan\": arrDataNodeMCUB.kelembaban, //arrDataNodeMCUB.kelembaban\n        \"datetime\": getDate(),\n    })\n    return tableData\n}\n\n// fungsi untuk mengambil tanggal dan waktu saat ini\nfunction getDate() {\n    // Ambil waktu sekarang\n    var date = new Date();\n    // set timezone GMT+8\n    date.setUTCHours(date.getUTCHours() + 8);\n    // Array untuk menyimpan nama bulan\n    var monthNames = [\n        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',\n        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'\n    ];\n\n    // Dapatkan tanggal, bulan, tahun, jam, dan menit dari objek Date\n    var day = date.getDate();\n    var monthIndex = date.getMonth();\n    var year = date.getFullYear();\n    var hours = date.getHours();\n    var minutes = date.getMinutes();\n\n    // ubah format jam menjadi 2 karakter\n    hours = String(hours).padStart(2, '0');\n    // ubah format menit menjadi 2 karakter\n    minutes = String(minutes).padStart(2, '0');\n\n    // Ubah format tanggal dan waktu menjadi seperti '1 Januari 2020 23:20'\n    var formattedDate = day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hours + ':' + minutes;\n\n    return formattedDate;\n}\n\n/**\n* @param {{ temperatur: string; tds: string; pH: string; waterLevelA: string; waterLevelB: string; pompa: string; }} arrDataNodeMCUA\n* @param {{ kelembaban: string; PAR: string }} arrDataNodeMCUB\n* @param {any} prediction\n*/\nfunction saveToDb(arrDataNodeMCUA, arrDataNodeMCUB, prediction) {\n    var date = new Date();\n    // set timezone GMT+8\n    date.setUTCHours(date.getUTCHours() + 8);\n    data = {\n        \"prediksi\": prediction,\n        \"kelembapan\": parseFloat(arrDataNodeMCUB.kelembaban),\n        \"temperatur\": parseFloat(arrDataNodeMCUA.temperatur),\n        \"par\": parseFloat(arrDataNodeMCUB.PAR),\n        \"tds\": parseFloat(arrDataNodeMCUA.tds),\n        \"ph\": parseFloat(arrDataNodeMCUA.pH),\n        \"pupukA\": parseInt(arrDataNodeMCUA.waterLevelA),\n        \"pupukB\": parseInt(arrDataNodeMCUA.waterLevelB),\n        \"pompa\": parseInt(arrDataNodeMCUA.pompa),\n        \"created_at\": date,\n        \"updated_at\": date,\n    }\n    return data;\n}",
+        "outputs": 13,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 320,
+        "wires": [
+            [
+                "28c1651d2ac4b8e7",
+                "5c749901610ae602"
+            ],
+            [
+                "573c09446b542403",
+                "2e859dbad35c8a73"
+            ],
+            [
+                "1022363e7db46856",
+                "9f9d6925d1b2943d"
+            ],
+            [
+                "0f1c3eef89e8e48e",
+                "2106b498c7e47aab"
+            ],
+            [
+                "785167c086f9b9e6",
+                "31734b10a25fcac7"
+            ],
+            [
+                "d1cf21c7c641b133",
+                "cc0c7e07df508acf"
+            ],
+            [
+                "64cb0295ba536fdf"
+            ],
+            [
+                "8a42ca5b2aabb526"
+            ],
+            [
+                "73d98b98d31c3a42"
+            ],
+            [
+                "15814152bbdb459b"
+            ],
+            [
+                "616816ca7f71190a",
+                "3cebce72a9514453"
+            ],
+            [
+                "d28306c5b0d87d0f"
+            ],
+            [
+                "b1f0eb9eca0ca217"
+            ]
+        ]
+    },
+    {
+        "id": "2e859dbad35c8a73",
+        "type": "ui_chart",
+        "z": "95838420939a3044",
+        "name": "Temperature Chart",
+        "group": "8f33856a0c23bd5d",
+        "order": 2,
+        "width": 6,
+        "height": 6,
+        "label": "Suhu",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 750,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0f1c3eef89e8e48e",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "Nutrisi B",
+        "group": "482abc419550ce90",
+        "order": 2,
+        "width": "6",
+        "height": "5",
+        "gtype": "wave",
+        "title": "Nutrisi B",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 720,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d1cf21c7c641b133",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "PAR Gauge",
+        "group": "0df143c409278637",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "gtype": "gage",
+        "title": "PAR",
+        "label": "µMol/m2/S",
+        "format": "{{value}}",
+        "min": "100",
+        "max": "800",
+        "colors": [
+            "#c20000",
+            "#00e61b",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 730,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "cc0c7e07df508acf",
+        "type": "ui_chart",
+        "z": "95838420939a3044",
+        "name": "PAR Chart",
+        "group": "0df143c409278637",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "label": "µMol/m2/S",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "100",
+        "ymax": "800",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 730,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b9ed034b2af9dd85",
+        "type": "mqtt in",
+        "z": "95838420939a3044",
+        "name": "Raspberry Pi",
+        "topic": "dataRaspi",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "c7603b37b846939a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 1880,
+        "wires": [
+            [
+                "5a853ebb0fc1c893",
+                "ed8f2bfd971f61aa"
+            ]
+        ]
+    },
+    {
+        "id": "64cb0295ba536fdf",
+        "type": "ui_text",
+        "z": "95838420939a3044",
+        "group": "404bd44ce5869c3f",
+        "order": 1,
+        "width": 12,
+        "height": 1,
+        "name": "",
+        "label": "Prediksi",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 720,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "ed8f2bfd971f61aa",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "setDataRaspi",
+        "func": "let data, arrData;\n\n// Mengambil data dari topik \"dataRaspi\"\nif (msg.topic === \"dataRaspi\") {\n    data = msg.payload;\n}\n\n// Pastikan data tidak undefined\nif (data !== undefined) {\n    // Jika data berbentuk string JSON, parse menjadi objek\n    try {\n        let parsedData = typeof data === \"string\" ? JSON.parse(data) : data;\n\n        // Cek apakah data memiliki semua properti yang dibutuhkan\n        if (parsedData.hasOwnProperty('prediction') && parsedData.hasOwnProperty('timestamp')) {\n            // Menyimpan data ke dalam array/objek\n            arrData = {\n                'prediksi': parsedData.prediction,\n                'waktu': parsedData.timestamp,\n                'confidence' : parsedData.confidence\n            };\n\n            // Menyimpan array ke dalam penyimpanan flow\n            flow.set('dataRaspi', arrData);\n        }\n    } catch (err) {\n        // Log jika parsing JSON gagal\n        node.error(\"Gagal parsing JSON data: \" + err.message);\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 1880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8a42ca5b2aabb526",
+        "type": "ui_text",
+        "z": "95838420939a3044",
+        "group": "404bd44ce5869c3f",
+        "order": 2,
+        "width": 12,
+        "height": 1,
+        "name": "",
+        "label": "Confidence",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 730,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "785167c086f9b9e6",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "pH Gauge",
+        "group": "f0ddc41b97ebf513",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "gtype": "gage",
+        "title": "pH",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "14",
+        "colors": [
+            "#b30000",
+            "#1be600",
+            "#ff0000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 730,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "31734b10a25fcac7",
+        "type": "ui_chart",
+        "z": "95838420939a3044",
+        "name": "pH Chart",
+        "group": "f0ddc41b97ebf513",
+        "order": 2,
+        "width": "6",
+        "height": "6",
+        "label": "pH",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "14",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 720,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c0e0943a1ac249e",
+        "type": "mqtt in",
+        "z": "95838420939a3044",
+        "name": "NodeMcu B",
+        "topic": "dataPPFDHumidity",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "847872f3d2692d07",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 2060,
+        "wires": [
+            [
+                "551ce25a533c634c",
+                "05e12a77fcae0b21"
+            ]
+        ]
+    },
+    {
+        "id": "551ce25a533c634c",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "setDataNodeMCUB",
+        "func": "let data, arrData, dataSplit;\n// mengambil data dari topik dataPPFDHumidity\"\nif (msg.topic == \"dataPPFDHumidity\") {\n    data = msg.payload\n}\n\nif(data != undefined)\n{\n    dataSplit = data.split(\"|\")\n    // Cek apakah data yang diterima lengkap\n    if (dataSplit.length == 2) {\n        // Menyimpan data dalam array\n        arrData = {\n            'PAR': dataSplit[0],\n            'kelembaban': dataSplit[1],\n            // 'systemControl': context.get('systemController'),\n        }\n        /* \n            Menyimpan array dalam penyimpanan sementara dengan tipe flow\n            Digunakan flow karena datanya akan digunakan pada node yang tidak terhubung dengan node ini namum masih dalam 1 flow\n         */\n        flow.set('dataNodeMCUB', arrData);\n    }\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.set('dummyPPFD', 400);",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 2060,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "616816ca7f71190a",
+        "type": "ui_gauge",
+        "z": "95838420939a3044",
+        "name": "Humidity Gauge",
+        "group": "abee42605935bf77",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "gtype": "gage",
+        "title": "Kelembapan",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#b30000",
+            "#00e604",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 740,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "3cebce72a9514453",
+        "type": "ui_chart",
+        "z": "95838420939a3044",
+        "name": "Humidity Chart",
+        "group": "abee42605935bf77",
+        "order": 2,
+        "width": "6",
+        "height": "6",
+        "label": "Kelembapan",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 740,
+        "y": 880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bb04653b60538ef0",
+        "type": "mqtt out",
+        "z": "95838420939a3044",
+        "name": "sendToNodeMCUB",
+        "topic": "setThresholdLight",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "847872f3d2692d07",
+        "x": 550,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "569583e2d509c248",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "setThresholdLight",
+        "func": "let kelas,minThreshold,maxThreshold;\nkelas = flow.get('dataPrediction').prediksi;\n\nswitch (kelas) {\n    case 1: // Vegetatif\n        minThreshold = 200;\n        maxThreshold = 300;\n        break;\n    case 2: // Generatif\n        minThreshold = 300;\n        maxThreshold = 500;\n        break;\n    case 3: // Siap Panen\n        minThreshold = 500;\n        maxThreshold = 600;\n        break;\n    default:\n        minThreshold = 300;\n        maxThreshold = 500; // Default threshold jika kelas tidak dikenali\n        break;\n}\nmsg.payload = JSON.stringify({ minThreshold: minThreshold , maxThreshold: maxThreshold });\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1320,
+        "wires": [
+            [
+                "bb04653b60538ef0",
+                "52841452ffba01fa"
+            ]
+        ]
+    },
+    {
+        "id": "6fc54e348486b6a5",
+        "type": "inject",
+        "z": "95838420939a3044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 1320,
+        "wires": [
+            [
+                "569583e2d509c248"
+            ]
+        ]
+    },
+    {
+        "id": "2b3eeca08e678941",
+        "type": "debug",
+        "z": "95838420939a3044",
+        "name": "debug 13",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 1700,
+        "wires": []
+    },
+    {
+        "id": "9f9d6925d1b2943d",
+        "type": "ui_template",
+        "z": "95838420939a3044",
+        "group": "482abc419550ce90",
+        "name": "Status A",
+        "order": 4,
+        "width": "6",
+        "height": "1",
+        "format": "<div\n    style=\"display: flex; justify-content: center; align-items: center; height: 100%; font-size: 18px; font-weight: bold;\">\n    <p id=\"status-A\" style=\"color: {{msg.color}};\">\n        {{msg.status}}\n    </p>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 720,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2106b498c7e47aab",
+        "type": "ui_template",
+        "z": "95838420939a3044",
+        "group": "482abc419550ce90",
+        "name": "Status B",
+        "order": 4,
+        "width": "6",
+        "height": "1",
+        "format": "<div\n    style=\"display: flex; justify-content: center; align-items: center; height: 100%; font-size: 18px; font-weight: bold;\">\n    <p id=\"status-B\" style=\"color: {{msg.color}};\">\n        {{msg.status}}\n    </p>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 720,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "52841452ffba01fa",
+        "type": "debug",
+        "z": "95838420939a3044",
+        "name": "debug 14",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "af265a8807eab076",
+        "type": "http in",
+        "z": "95838420939a3044",
+        "name": "[post]]Image",
+        "url": "/upload",
+        "method": "post",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 1240,
+        "wires": [
+            [
+                "7a604636a8078689",
+                "684e1a043527e7c1"
+            ]
+        ]
+    },
+    {
+        "id": "684e1a043527e7c1",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "set Image",
+        "func": "let hexString = msg.req.body.gambar; // Ambil data hexadecimal\nlet buffer = Buffer.from(hexString, 'hex'); // Konversi ke buffer\nlet gambar = \"data:image/jpeg;base64,\" + buffer.toString('base64');\nflow.set('dataGambar', gambar);\n// Tambahkan buffer ke payload untuk dikirim ke dashboard\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 1240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7a604636a8078689",
+        "type": "debug",
+        "z": "95838420939a3044",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "req.body.gambar",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "15814152bbdb459b",
+        "type": "ui_template",
+        "z": "95838420939a3044",
+        "group": "404bd44ce5869c3f",
+        "name": "Gambar Tanaman",
+        "order": 3,
+        "width": 12,
+        "height": 10,
+        "format": "<div style=\"text-align: center;\">\n    <img src=\"{{msg.payload}}\" style=\"max-width:100%; border:1px solid #ddd;\" />\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 750,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d28306c5b0d87d0f",
+        "type": "ui_table",
+        "z": "95838420939a3044",
+        "group": "a471afc039ce55a9",
+        "name": "Log Sistem",
+        "order": 0,
+        "width": "24",
+        "height": "12",
+        "columns": [
+            {
+                "field": "No",
+                "title": "No",
+                "width": "3px",
+                "align": "left",
+                "formatter": "rownum",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "prediksi",
+                "title": "Fase Pertumbuhan",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "par",
+                "title": "PAR",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "tds",
+                "title": "TDS",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "temperatur",
+                "title": "Temperatur",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "ph",
+                "title": "pH",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "kelembapan",
+                "title": "Kelembapan",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "pupukA",
+                "title": "PupukA",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "pupukB",
+                "title": "Pupuk B",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "pompa",
+                "title": "Pompa Nutrisi",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "datetime",
+                "title": "waktu",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 730,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "1cd6822317212dbf",
+        "type": "mongodb-node",
+        "z": "95838420939a3044",
+        "mongodb": "fe842ca3a955df65",
+        "name": "Simpan ke DB",
+        "collection": "Hidroponik",
+        "operation": "insert",
+        "upsert": false,
+        "multi": false,
+        "x": 920,
+        "y": 1020,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b1f0eb9eca0ca217",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "Interval ",
+        "func": "let newDate = new Date();\n// @ts-ignore\n\n// Mneghitung selisih waktu yang diset pada On Start (setDateSaveDb) dengan waktu saat ini\nlet diffMinute = (newDate - context.get('setDateStartDb')) / (1000 * 60);\n\n// cek jika selisih waktu lebih dari 15 menit\nif (diffMinute > 15) {\n    // menimpa waktu yang diset dengan waktu saat ini\n    context.set('setDateStartDb', new Date())\n    // return data yang akan disave ke db\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\ncontext.set('setDateStartDb', new Date('2025-01-18T17:00:00'));",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 1020,
+        "wires": [
+            [
+                "1cd6822317212dbf"
+            ]
+        ]
+    },
+    {
+        "id": "05e12a77fcae0b21",
+        "type": "debug",
+        "z": "95838420939a3044",
+        "name": "debug 16",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 2000,
+        "wires": []
+    },
+    {
+        "id": "73d98b98d31c3a42",
+        "type": "ui_text",
+        "z": "95838420939a3044",
+        "group": "404bd44ce5869c3f",
+        "order": 4,
+        "width": 12,
+        "height": 1,
+        "name": "",
+        "label": "Waktu",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 710,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "7c43b6d440958db2",
+        "type": "mqtt out",
+        "z": "95838420939a3044",
+        "name": "sendToNodeMCUA",
+        "topic": "setThresholdNutrisi",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "847872f3d2692d07",
+        "x": 550,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "defb44679c8c162c",
+        "type": "function",
+        "z": "95838420939a3044",
+        "name": "setThresholdPPM",
+        "func": "let thresholdPPM = 1500;\n\nmsg.payload = JSON.stringify({ thresholdNutrisi: thresholdPPM });\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1500,
+        "wires": [
+            [
+                "7c43b6d440958db2",
+                "87a7c58b3cd88e12"
+            ]
+        ]
+    },
+    {
+        "id": "55a6ab9738426618",
+        "type": "inject",
+        "z": "95838420939a3044",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 1500,
+        "wires": [
+            [
+                "defb44679c8c162c"
+            ]
+        ]
+    },
+    {
+        "id": "87a7c58b3cd88e12",
+        "type": "debug",
+        "z": "95838420939a3044",
+        "name": "debug 17",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "65d14f947bd5328e",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 3,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "563482393b85f5bd",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 4,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "ad768d10a2cea1bf",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 5,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "1d03e11d09db9448",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 6,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "a1cdc7684c23eedb",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 7,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "a0aea69380ffeb99",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 8,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "1d97496380525997",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 9,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "b37703eda2d041dc",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 10,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "d9bfa7d188c61144",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 12,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "0b9f9c7d0812fa7e",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 13,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "fc9ba87ce2699ec9",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 14,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "6d23472915a8ad54",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 15,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "39bb7b5a3dfa4d75",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 16,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "c304964760032416",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 17,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "91c20fdb087dbefa",
+        "type": "ui_spacer",
+        "z": "95838420939a3044",
+        "name": "spacer",
+        "group": "fc59f6dc87c44c5a",
+        "order": 18,
+        "width": 15,
+        "height": 1
+    },
+    {
+        "id": "591a80600ac0e839",
+        "type": "ui_group",
+        "name": "TDS",
+        "tab": "bd794d5d9e7e08fd",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8f33856a0c23bd5d",
+        "type": "ui_group",
+        "name": "Temperatur",
+        "tab": "bd794d5d9e7e08fd",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "482abc419550ce90",
+        "type": "ui_group",
+        "name": "Level Nutrisi",
+        "tab": "bd794d5d9e7e08fd",
+        "order": 5,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "847872f3d2692d07",
+        "type": "mqtt-broker",
+        "name": "LOCAL IP",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0df143c409278637",
+        "type": "ui_group",
+        "name": "Intensitas Cahaya",
+        "tab": "bd794d5d9e7e08fd",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c7603b37b846939a",
+        "type": "mqtt-broker",
+        "name": "localhost",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "404bd44ce5869c3f",
+        "type": "ui_group",
+        "name": "Citra Tanaman",
+        "tab": "153c011a8a707fca",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f0ddc41b97ebf513",
+        "type": "ui_group",
+        "name": "pH",
+        "tab": "bd794d5d9e7e08fd",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "abee42605935bf77",
+        "type": "ui_group",
+        "name": "Kelembapan",
+        "tab": "bd794d5d9e7e08fd",
+        "order": 6,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a471afc039ce55a9",
+        "type": "ui_group",
+        "name": "Log Sistem Hidroponik",
+        "tab": "b23a1e90f4e97c64",
+        "order": 1,
+        "disp": true,
+        "width": "24",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fe842ca3a955df65",
+        "type": "mongodb-config",
+        "hostname": "10.1.2.60",
+        "port": "27017",
+        "db": "smartfarm",
+        "name": "Mongo Server"
+    },
+    {
+        "id": "fc59f6dc87c44c5a",
+        "type": "ui_group",
+        "name": "hidroponik",
+        "tab": "2fb35ca35c670055",
+        "order": 1,
+        "disp": true,
+        "width": "25",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "bd794d5d9e7e08fd",
+        "type": "ui_tab",
+        "name": "Hidroponik",
+        "icon": "fa-pagelines",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "153c011a8a707fca",
+        "type": "ui_tab",
+        "name": "Citra Tanaman",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "b23a1e90f4e97c64",
+        "type": "ui_tab",
+        "name": "Log Sistem",
+        "icon": "fa-history",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "2fb35ca35c670055",
+        "type": "ui_tab",
+        "name": "HIDROPONIK",
+        "icon": "Dashboard",
+        "order": 1,
+        "disabled": true,
+        "hidden": true
+    }
+]
